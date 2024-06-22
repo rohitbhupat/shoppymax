@@ -1,0 +1,262 @@
+service: backend
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+
+# Users
+functions:
+  createUser:
+    handler: functions/users/createUser.createUser
+    events:
+      - http:
+          path: adduser
+          method: post
+
+  getUser:
+    handler: functions/users/getUsers.getUsers
+    events:
+      - http:
+          path: getusers
+          method: get
+  
+  getUserbyId:
+    handler: functions/users/getUserbyId.getUserbyId
+    events:
+      - http:
+          path: getuser/{id}
+          method: get
+
+  updateUser:
+    handler: functions/users/updateUser.updateUser
+    events:
+      - http:
+          path: updateuser/{id}
+          method: put
+
+  deleteUser:
+    handler: functions/users/deleteUser.deleteUser
+    events:
+      - http:
+          path: deleteuser/{id}
+          method: delete
+
+# Seller
+  createSeller:
+    handler: functions/sellers/createSeller.createSeller
+    events:
+      - http:
+          path: addseller
+          method: post
+
+  getSeller:
+    handler: functions/sellers/getSellers.getSellers
+    events:
+      - http:
+          path: getseller
+          method: get
+
+  getSellerbyId:
+    handler: functions/sellers/getSellerbyId.getSellerbyId
+    events:
+      - http:
+          path: getseller/{id}
+          method: get
+
+  updateSeller:
+    handler: functions/sellers/updateSeller.updateSeller
+    events:
+      - http:
+          path: updateseller/{id}
+          method: put
+
+  deleteSeller:
+    handler: functions/sellers/deleteSeller.deleteSeller
+    events:
+      - http:
+          path: deleteseller/{id}
+          method: delete
+
+# Products
+  createProduct:
+    handler: functions/products/createProduct.createProduct
+    events:
+      - http:
+          path: addproduct
+          method: post
+
+  getProducts:
+    handler: functions/products/getProducts.getProducts
+    events:
+      - http:
+          path: getproducts
+          method: get
+
+  getProductbyId:
+    handler: functions/products/getProductbyId.getProductbyId
+    events:
+      - http:
+          path: getproducts/{id}
+          method: get
+
+  updateProduct:
+    handler: functions/products/updateProduct.updateProduct
+    events:
+      - http:
+          path: updateproduct/{id}
+          method: put
+
+  deleteProduct:
+    handler: functions/products/deleteProduct.deleteProduct
+    events:
+      - http:
+          path: deleteproduct/{id}
+          method: delete
+
+# categories
+  createCategory:
+    handler: functions/categories/createCategory.createCategory
+    events:
+      - http:
+          path: addcategory
+          method: post
+
+  getCategory:
+    handler: functions/categories/getCategories.getCategories
+    events:
+      - http:
+          path: getcategory
+          method: get
+
+  getCategorybyId:
+    handler: functions/categories/getCategorybyId.getCategorybyId
+    events:
+      - http:
+          path: getcategory/{id}
+          method: get
+
+  updateCategory:
+    handler: functions/categories/updateCategory.updateCategory
+    events:
+      - http:
+          path: updatecategory/{id}
+          method: put
+
+  deleteCategory:
+    handler: functions/categories/deleteCategory.deleteCategory
+    events:
+      - http:
+          path: deletecategory/{id}
+          method: delete
+          
+# admin
+  createAdmin:
+    handler: functions/admin/createAdmin.createAdmin
+    events:
+      - http:
+          path: addadmin
+          method: post
+
+  getAdmin:
+    handler: functions/admin/getAdmin.getAdmin
+    events:
+      - http:
+          path: getadmin
+          method: get
+
+  getAdminbyId:
+    handler: functions/admin/getAdminbyId.getAdminbyId
+    events:
+      - http:
+          path: getadmin/{id}
+          method: get
+
+  updateAdmin:
+    handler: functions/admin/updateAdmin.updateAdmin
+    events:
+      - http:
+          path: updateadmin/{id}
+          method: put
+
+  deleteAdmin:
+    handler: functions/admin/deleteAdmin.deleteAdmin
+    events:
+      - http:
+          path: deleteadmin/{id}
+          method: delete
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Users
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    SellersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Sellers
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    ProductsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Products
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    CategoriesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Categories
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    AdminTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Admins
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+plugins:
+  - serverless-offline
