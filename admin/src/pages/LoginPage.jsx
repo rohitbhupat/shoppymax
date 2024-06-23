@@ -1,10 +1,13 @@
+// LoginPage.jsx
 import React, { useState } from 'react';
 import { SunIcon, MoonIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/outline';
 import { getAdmin } from '../api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import useAuth hook
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    const { login } = useAuth(); // Use the login function from AuthContext
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -24,6 +27,7 @@ const LoginPage = () => {
             const admins = await getAdmin();
             const admin = admins.find(admin => admin.username === username && admin.password === password);
             if (admin) {
+                login({ username }); // Set the logged-in username
                 navigate('/dashboard');
             } else {
                 setError('Invalid username or password');

@@ -1,6 +1,7 @@
 const { UpdateItemCommand } = require('@aws-sdk/client-dynamodb');
-const { marshall } = require('@aws-sdk/util-dynamodb');
-const dynamoDB = require('../../dynamoDB/dbConfig');
+const { marshall, unmarshall } = require('@aws-sdk/util-dynamodb');
+
+const dynamoDB = require("../../dynamoDB/dbConfig"); // Replace with your AWS region
 
 module.exports.updateAdmin = async (event) => {
     try {
@@ -9,7 +10,7 @@ module.exports.updateAdmin = async (event) => {
 
         // Validate required fields
         const { username, email, password } = requestBody;
-        if (!username || !email || !password) {
+        if (!id || !username || !email || !password) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({ error: "Missing required fields" }),
@@ -17,32 +18,34 @@ module.exports.updateAdmin = async (event) => {
         }
 
         // Prepare update expression and attribute values
-        const updateExpression = 'SET #username = :username, #email = :email, #password = :password, updatedAt = :updatedAt';
-        const expressionAttributeNames = {
-            '#username': 'username',
-            '#email': 'email',
-            '#password': 'password',
-        };
+        const updateExpression = 'SET #username = :username, email = :email, #password = :password, updatedAt = :updatedAt';
         const expressionAttributeValues = marshall({
             ':username': username,
             ':email': email,
-            ':password': 'password',
+            ':password': password,
             ':updatedAt': new Date().toISOString(),
         });
+        
+        // Use ExpressionAttributeNames for reserved keywords like 'password' and 'username'
+        const expressionAttributeNames = {
+            '#username': 'username',
+            '#password': 'password'
+        };
 
         const params = {
             TableName: "Admins",
-            Key: marshall({ id }),
+            Key: marshall({ id }), // Use the id to identify the item to update
             UpdateExpression: updateExpression,
-            ExpressionAttributeNames: expressionAttributeNames,
             ExpressionAttributeValues: expressionAttributeValues,
+            ExpressionAttributeNames: expressionAttributeNames,
+            ReturnValues: 'ALL_NEW', // Optional, determines what values are returned after update
         };
 
-        await dynamoDB.send(new UpdateItemCommand(params));
+        const result = await dynamoDB.send(new UpdateItemCommand(params));
 
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: "Admin updated successfully" }),
+            body: JSON.stringify({ message: "Admin updated successfully", updatedAttributes: unmarshall(result.Attributes) }),
         };
     } catch (error) {
         console.error("Error:", error);

@@ -3,11 +3,19 @@ import { Menu, Transition } from '@headlessui/react';
 import { BellIcon, SunIcon, MoonIcon } from '@heroicons/react/outline';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../../ThemeProvider';
-// import WebsiteLogo from '../../assets/logo.png'; // Replace with your logo path
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-const Header = ({ adminName }) => {
+const Header = () => {
     const { mode, toggleMode } = useTheme();
+    const { currentUser, logout } = useAuth(); // Use AuthContext to get the current user and logout function
+    const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+
+    const handleLogout = () => {
+        logout();
+        navigate('/');
+    };
 
     const openModal = () => {
         setIsModalOpen(true);
@@ -24,8 +32,6 @@ const Header = ({ adminName }) => {
                 {isModalOpen && (
                     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
                         <div className={`modal-container bg-white p-8 max-w-md rounded-lg shadow-lg ${mode === 'dark' ? 'dark' : ''}`}>
-                            {/* Replace with your logo or website name content */}
-                            {/* <img src={WebsiteLogo} alt="Logo" className="w-32 h-32 mb-4 mx-auto" /> */}
                             <div className={`text-3xl font-bold text-center mb-4 ${mode === 'dark' ? 'text-gray-800' : 'text-gray-800'}`}>
                                 ShoppyMax Dashboard
                             </div>
@@ -39,15 +45,11 @@ const Header = ({ adminName }) => {
                     </div>
                 )}
 
-                {/* Logo or Website Name */}
                 <div className="text-xl font-bold cursor-pointer" onClick={openModal}>
-                    {/* For logo: */}
-                    {/* <img src={WebsiteLogo} alt="Logo" className="w-8 h-8 mr-2" /> */}
                     ShoppyMax Dashboard
                 </div>
 
                 <div className="flex items-center">
-                    {/* Dark/Light Mode Button */}
                     <button onClick={toggleMode} className="mr-4">
                         {mode === 'dark' ? (
                             <SunIcon className="w-6 h-6 text-yellow-500" />
@@ -56,7 +58,6 @@ const Header = ({ adminName }) => {
                         )}
                     </button>
 
-                    {/* Notification Dropdown */}
                     <Menu as="div" className="relative">
                         <div>
                             <Menu.Button className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -64,7 +65,6 @@ const Header = ({ adminName }) => {
                                 <BellIcon className="h-6 w-6" aria-hidden="true" />
                             </Menu.Button>
                         </div>
-                        {/* Notification Sidebar */}
                         <Transition
                             as={React.Fragment}
                             enter="transition ease-out duration-100"
@@ -86,11 +86,10 @@ const Header = ({ adminName }) => {
                         </Transition>
                     </Menu>
 
-                    {/* Profile Dropdown */}
                     <Menu as="div" className="relative ml-3">
                         <div>
                             <Menu.Button className="flex items-center rounded-full bg-gray-800 text-sm focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                <span className="text-white mr-2">Welcome, {adminName}</span>
+                                <span className="text-white mr-2">Welcome, {currentUser ? currentUser.username : 'Guest'}</span>
                             </Menu.Button>
                         </div>
                         <Transition
@@ -115,12 +114,12 @@ const Header = ({ adminName }) => {
                                 </Menu.Item>
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <a
-                                            href="#"
-                                            className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm text-gray-700`}
+                                        <button
+                                            onClick={handleLogout}
+                                            className={`${active ? 'bg-gray-100' : ''} block w-full text-left px-4 py-2 text-sm text-gray-700`}
                                         >
                                             Sign out
-                                        </a>
+                                        </button>
                                     )}
                                 </Menu.Item>
                             </Menu.Items>

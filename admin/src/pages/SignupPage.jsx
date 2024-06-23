@@ -1,32 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { SunIcon, MoonIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/outline';
 import { addAdmin } from '../api';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import useAuth hook
+import { useTheme } from "../ThemeProvider";
 
 const SignupPage = () => {
     const navigate = useNavigate();
+    const { login } = useAuth(); // Use the login function from AuthContext
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const [mode, setMode] = useState(() => {
-        const storedMode = localStorage.getItem('mode');
-        return storedMode ? storedMode : 'light';
-    }); // 'dark' or 'light'
+    const { mode, toggleMode } = useTheme(); // Use the mode and toggleMode functions from ThemeContext
     const [showPassword, setShowPassword] = useState(false);
-
-    useEffect(() => {
-        localStorage.setItem('mode', mode);
-    }, [mode]);
-
-    const toggleMode = () => {
-        setMode((prevMode) => (prevMode === 'dark' ? 'light' : 'dark'));
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await addAdmin({ username, email, password });
+            const newUser = { username }; // Assuming addAdmin returns user details
+            login(newUser); // Log in the newly signed-up user
             navigate('/dashboard');
         } catch (err) {
             setError('Error signing up');
@@ -40,16 +34,16 @@ const SignupPage = () => {
     return (
         <div className={`min-h-screen flex items-center justify-center bg-${mode === 'dark' ? 'gray-900' : 'gray-100'}`}>
             <div className={`bg-${mode === 'dark' ? 'gray-800' : 'white'} p-8 rounded shadow-md w-full max-w-md`}>
-            <div className="flex justify-between items-center mb-6">
-                <h2 className={`text-2xl font-bold mb-6 text-center text-${mode === 'dark' ? 'white' : 'black'}`}>Admin Signup</h2>
-                <button onClick={toggleMode}>
-                            {mode === 'dark' ? (
-                                <SunIcon className="w-6 h-6 text-yellow-500" />
-                            ) : (
-                                <MoonIcon className="w-6 h-6 text-gray-500" />
-                            )}
-                        </button>
-                    </div>
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className={`text-2xl font-bold mb-6 text-center text-${mode === 'dark' ? 'white' : 'black'}`}>Admin Signup</h2>
+                    <button onClick={toggleMode}>
+                        {mode === 'dark' ? (
+                            <SunIcon className="w-6 h-6 text-yellow-500" />
+                        ) : (
+                            <MoonIcon className="w-6 h-6 text-gray-500" />
+                        )}
+                    </button>
+                </div>
                 {error && <p className="text-red-500 text-center mb-4">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">

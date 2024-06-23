@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+// ThemeProvider.jsx
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const ThemeContext = createContext();
 
@@ -13,6 +15,10 @@ export const ThemeProvider = ({ children }) => {
         setMode(newMode);
         localStorage.setItem('mode', newMode);
     };
+
+    useEffect(() => {
+        localStorage.setItem('mode', mode);
+    }, [mode]);
 
     return (
         <ThemeContext.Provider value={{ mode, toggleMode }}>
