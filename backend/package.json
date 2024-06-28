@@ -2,7 +2,9 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.592.0",
     "@aws-sdk/lib-dynamodb": "^3.592.0",
-    "aws-sdk": "^2.1623.0"
+    "aws-sdk": "^2.1623.0",
+    "body-parser": "^1.20.2",
+    "express": "^4.19.2"
   },
   "devDependencies": {
     "serverless-offline": "^13.6.0"

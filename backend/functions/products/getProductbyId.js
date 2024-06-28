@@ -14,9 +14,10 @@ module.exports.getProductbyId = async (event) => {
     try {
         const data = await dynamoDB.send(new GetItemCommand(params));
         if (data.Item) {
+            const product = AWS.DynamoDB.Converter.unmarshall(data.Item); // Convert to regular JSON
             return {
                 statusCode: 200,
-                body: JSON.stringify(data.Item),
+                body: JSON.stringify(product),
             };
         } else {
             return {

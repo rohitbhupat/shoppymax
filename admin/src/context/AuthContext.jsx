@@ -7,7 +7,7 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(() => {
         const storedUser = localStorage.getItem('currentUser');
-        return storedUser ? JSON.parse(storedUser) : { username: 'Guest', email: '', password: '' };
+        return storedUser ? JSON.parse(storedUser) : { id: '', username: 'Guest', email: '', password: '' };
     });
 
     const login = (user) => {
@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        setCurrentUser({ username: 'Guest', email: '', password: '' });
+        setCurrentUser({ id: '', username: 'Guest', email: '', password: '' });
         localStorage.removeItem('currentUser');
     };
 
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
 
     const value = {
         currentUser,
-        setCurrentUser, // Expose setCurrentUser
+        setCurrentUser,
         login,
         logout,
     };

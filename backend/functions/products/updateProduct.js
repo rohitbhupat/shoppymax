@@ -1,7 +1,6 @@
 const { UpdateItemCommand } = require('@aws-sdk/client-dynamodb');
 const dynamoDB = require('../../dynamoDB/dbConfig');
 
-
 module.exports.updateProduct = async (event) => {
     const { id } = event.pathParameters;
     const { name, description, price, category } = JSON.parse(event.body);
@@ -29,12 +28,13 @@ module.exports.updateProduct = async (event) => {
 
     try {
         const data = await dynamoDB.send(new UpdateItemCommand(params));
+        const updatedAttributes = AWS.DynamoDB.Converter.unmarshall(data.Attributes); // Convert to regular JSON
         return {
             statusCode: 200,
-            body: JSON.stringify(data.Attributes),
+            body: JSON.stringify(updatedAttributes),
         };
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error updating product:", error);
         return {
             statusCode: 500,
             body: JSON.stringify({ error: "Internal Server Error" }),

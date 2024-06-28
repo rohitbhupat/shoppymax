@@ -3,21 +3,20 @@ import { SunIcon, MoonIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/outline
 import { useTheme } from '../../ThemeProvider';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { updateAdmin } from '../../api';
 
 const ProfileSettings = () => {
     const { mode, toggleMode } = useTheme();
     const { currentUser, setCurrentUser } = useAuth();
     const navigate = useNavigate();
 
-    // Initialize state variables with empty values
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [notification, setNotification] = useState('');
+    const [error, setError] = useState('');
 
-    // Set state from currentUser when component mounts
     useEffect(() => {
         if (currentUser) {
             setUsername(currentUser.username || '');
@@ -32,20 +31,12 @@ const ProfileSettings = () => {
 
     const updateProfile = async () => {
         try {
-            const response = await axios.put(`http://localhost:3000/dev/updateadmin/${currentUser.id}`, {
-                id: currentUser.id, // Ensure the id is included
+            const response = await updateAdmin(currentUser.id, {
                 username,
                 email,
                 password
             });
-            // Update currentUser in the context
-            setCurrentUser({
-                ...currentUser,
-                username,
-                email,
-                password
-            });
-            return response.data;
+            return response; // Assuming response is handled appropriately in handleSubmit
         } catch (error) {
             console.error('Error updating profile:', error);
             throw new Error('Failed to update profile');
@@ -54,18 +45,17 @@ const ProfileSettings = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         try {
             await updateProfile();
-
-            // Show notification and redirect
             setNotification('Profile details updated successfully.');
             setTimeout(() => {
                 setNotification('');
                 navigate('/dashboard');
-            }, 3000); // Redirect after 3 seconds
+            }, 3000);
         } catch (error) {
             console.error('Error updating profile:', error);
-            // Handle error updating profile
+            setError('Failed to update profile');
         }
     };
 
@@ -81,6 +71,11 @@ const ProfileSettings = () => {
                 {notification && (
                     <div className="bg-green-500 text-white p-3 mb-4 rounded">
                         {notification}
+                    </div>
+                )}
+                {error && (
+                    <div className="bg-red-500 text-white p-3 mb-4 rounded">
+                        {error}
                     </div>
                 )}
                 <form onSubmit={handleSubmit}>

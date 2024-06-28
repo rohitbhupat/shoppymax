@@ -46,7 +46,7 @@ module.exports.createProduct = async (event) => {
             body: JSON.stringify({ message: "Product created successfully", id }),
         };
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Error:", error); // Log the error for debugging
         return {
             statusCode: 500,
             body: JSON.stringify({ error: "Internal Server Error" }),

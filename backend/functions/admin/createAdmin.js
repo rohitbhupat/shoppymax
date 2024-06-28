@@ -1,27 +1,22 @@
 const { PutItemCommand } = require('@aws-sdk/client-dynamodb');
 const { marshall } = require('@aws-sdk/util-dynamodb');
-const { v4: uuidv4 } = require('uuid'); // Importing uuid
 const dynamoDB = require('../../dynamoDB/dbConfig');
 
 module.exports.createAdmin = async (event) => {
     try {
         const requestBody = JSON.parse(event.body);
 
-        // Log the parsed request body
-        console.log("Request Body:", requestBody);
-
         // Validate required fields
         const { username, email, password } = requestBody;
         if (!username || !email || !password) {
-            console.log("Missing required fields", { username, email, password });
             return {
                 statusCode: 400,
                 body: JSON.stringify({ error: "Missing required fields" }),
             };
         }
 
-        // Generate a unique id using uuid
-        const id = uuidv4();
+        // Generate a unique id using timestamp or UUID
+        const id = generateId(); // Replace with your ID generation logic
 
         const params = {
             TableName: "Admins",
@@ -34,8 +29,6 @@ module.exports.createAdmin = async (event) => {
                 updatedAt: new Date().toISOString(),
             }),
         };
-
-        console.log("Params:", params);
 
         await dynamoDB.send(new PutItemCommand(params));
 
@@ -57,3 +50,8 @@ module.exports.createAdmin = async (event) => {
         };
     }
 };
+
+function generateId() {
+    // Implement your custom ID generation logic here, e.g., using timestamp or UUID
+    return Date.now().toString(); // Example: using timestamp as ID
+}
