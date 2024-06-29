@@ -13,6 +13,7 @@ const Sidebar = () => {
     const [isDeliveryStatusDropdownOpen, setIsDeliveryStatusDropdownOpen] = useState(false);
     const [isPaymentsDropdownOpen, setIsPaymentsDropdownOpen] = useState(false);
     const [isAddingProduct, setIsAddingProduct] = useState(false);
+    const [isGetProductList, setIsGetProductList] = useState(false);
 
 
     const toggleProductsDropdown = () => {
@@ -21,6 +22,10 @@ const Sidebar = () => {
 
     const toggleAddProductForm = () => {
         setIsAddingProduct(!isAddingProduct);
+    };
+
+    const toggleGetProductList = () => {
+        setIsGetProductList(!isGetProductList);
     };
 
     const toggleUsersDropdown = () => {
@@ -46,10 +51,10 @@ const Sidebar = () => {
         <div className={`w-64 ${mode === 'dark' ? 'bg-gray-800' : 'bg-gray-200'} p-4 flex-shrink-0 h-screen`}>
             <ul className="space-y-2">
                 <li className="group">
-                    <a href="#" className={`flex items-center space-x-2 p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'}`}>
+                    <Link to="#" className={`flex items-center space-x-2 p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'}`}>
                         <HomeIcon className={`h-5 w-5 ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`} />
                         <span className={`${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>Home</span>
-                    </a>
+                    </Link>
                 </li>
 
                 {/* Products Dropdown */}
@@ -74,9 +79,9 @@ const Sidebar = () => {
                                 </Link>
                             </li>
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="/products" onClick={toggleGetProductList} className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Products Listing
-                                </a>
+                                </Link>
                             </li>
                             <li>
                                 <Link to="/updateproduct/:id" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
@@ -104,19 +109,19 @@ const Sidebar = () => {
                     {isUsersDropdownOpen && (
                         <ul className="ml-6 space-y-2">
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Add Users
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Users List
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Update Users
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     )}
@@ -139,19 +144,19 @@ const Sidebar = () => {
                     {isSellersDropdownOpen && (
                         <ul className="ml-6 space-y-2">
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Add Sellers
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Sellers List
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Update Sellers
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     )}
@@ -174,19 +179,19 @@ const Sidebar = () => {
                     {isCategoriesDropdownOpen && (
                         <ul className="ml-6 space-y-2">
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Add Categories
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Categories List
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Update Categories
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     )}
@@ -209,9 +214,9 @@ const Sidebar = () => {
                     {isDeliveryStatusDropdownOpen && (
                         <ul className="ml-6 space-y-2">
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Update Delivery Status
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     )}
@@ -234,9 +239,9 @@ const Sidebar = () => {
                     {isPaymentsDropdownOpen && (
                         <ul className="ml-6 space-y-2">
                             <li>
-                                <a href="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
+                                <Link to="#" className={`block p-2 rounded-md hover:bg-${mode === 'dark' ? 'gray-700' : 'gray-300'} ${mode === 'dark' ? 'text-white' : 'text-gray-700'} group-hover:text-white-500`}>
                                     Update Payments
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     )}

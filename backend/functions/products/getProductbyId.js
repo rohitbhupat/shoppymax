@@ -1,7 +1,8 @@
 const { GetItemCommand } = require('@aws-sdk/client-dynamodb');
 const dynamoDB = require('../../dynamoDB/dbConfig');
+const AWS = require('aws-sdk');
 
-module.exports.getProductbyId = async (event) => {
+module.exports.getProductById = async (event) => { // Corrected function name to getProductById
     const { id } = event.pathParameters;
 
     const params = {

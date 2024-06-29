@@ -11,8 +11,8 @@ module.exports.createProduct = async (event) => {
         const requestBody = JSON.parse(event.body);
 
         // Validate required fields
-        const { name, description, price, category } = requestBody;
-        if (!name || !description || !price || !category) {
+        const { name, image, description, price, category, quantity } = requestBody;
+        if (!name || !image || !description || !price || !category || !quantity) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({ error: "Missing required fields" }),
@@ -26,9 +26,11 @@ module.exports.createProduct = async (event) => {
         const item = {
             id,
             name,
+            image,
             description,
             price: price.toString(), // DynamoDB expects numbers as strings
             category,
+            quantity,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
         };

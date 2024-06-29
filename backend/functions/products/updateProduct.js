@@ -1,27 +1,32 @@
 const { UpdateItemCommand } = require('@aws-sdk/client-dynamodb');
 const dynamoDB = require('../../dynamoDB/dbConfig');
+const AWS = require('aws-sdk');
 
 module.exports.updateProduct = async (event) => {
     const { id } = event.pathParameters;
-    const { name, description, price, category } = JSON.parse(event.body);
+    const { name, image, description, price, category, quantity } = JSON.parse(event.body);
 
     const params = {
         TableName: "Products",
         Key: {
             "id": { S: id }
         },
-        UpdateExpression: "SET #name = :name, #description = :description, #price = :price, #category = :category",
+        UpdateExpression: "SET #name = :name, #image = :image, #description = :description, #price = :price, #category = :category, #quantity = :quantity", // Fixed missing comma
         ExpressionAttributeNames: {
             "#name": "name",
+            "#image": "image",
             "#description": "description",
             "#price": "price",
-            "#category": "category"
+            "#category": "category",
+            "#quantity": "quantity",
         },
         ExpressionAttributeValues: {
             ":name": { S: name },
+            ":image": { S: image },
             ":description": { S: description },
             ":price": { N: price.toString() },
-            ":category": { S: category }
+            ":category": { S: category },
+            ":quantity": { N: quantity.toString() }, // Ensure quantity is converted to string as well
         },
         ReturnValues: "ALL_NEW"
     };

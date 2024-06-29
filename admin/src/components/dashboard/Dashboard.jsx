@@ -1,9 +1,5 @@
-// Dashboard.jsx
-
 import React, { useEffect, useState } from 'react';
-import Header from '../common/Header';
-import Footer from '../common/Footer';
-import Sidebar from '../common/Sidebar';
+import Layout from '../Layout';
 import StatsCard from './StatsCard';
 import RecentActivities from './RecentActivities';
 import { useTheme } from '../../ThemeProvider';
@@ -28,23 +24,16 @@ const Dashboard = () => {
     }, []);
 
     return (
-        <div className={`flex flex-col min-h-screen ${mode === 'dark' ? 'dark' : ''}`}>
-            <Header adminName={adminName} />
-            <div className="flex flex-1 pt-16">
-                <Sidebar mode={mode} />
-                <main className="flex-1 p-4">
-                    <h1 className={`text-2xl font-bold mb-4 text-${mode === 'dark' ? 'white' : 'black'}`}>Dashboard</h1>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <StatsCard title="Total Users" value="1000" mode={mode} />
-                        <StatsCard title="Total Orders" value="500" mode={mode} />
-                        {/* Add more stats cards here */}
-                    </div>
-                    <RecentActivities mode={mode} />
-                    {/* Add more dashboard components here */}
-                </main>
+        <Layout>
+            <h1 className={`text-2xl font-bold mb-4 text-${mode === 'dark' ? 'white' : 'black'}`}>Dashboard</h1>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <StatsCard title="Total Users" value="1000" mode={mode} />
+                <StatsCard title="Total Orders" value="500" mode={mode} />
+                {/* Add more stats cards here */}
             </div>
-            <Footer />
-        </div>
+            <RecentActivities mode={mode} />
+            {/* Add more dashboard components here */}
+        </Layout>
     );
 };
 

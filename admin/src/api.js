@@ -113,12 +113,21 @@ export const updateProduct = async (id, product) => {
 export const getProducts = async () => {
   try {
     const response = await fetchData('getproducts');
-    return response;
+    console.log("Response from getProducts:", response); // Log response to inspect in console
+
+    if (response && response.Items) {
+      return response.Items; // Assuming response.Items is an array of products
+    } else {
+      return []; // Return an empty array if response.Items is undefined or null
+    }
   } catch (error) {
     console.error("Error fetching products:", error.message);
     throw error;
   }
 };
+
+
+
 
 export const getProductById = async (id) => {
   const response = await fetch(`${apiBaseUrl}/getproducts/${id}`);
