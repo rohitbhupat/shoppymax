@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '../../ThemeProvider';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import classNames from 'classnames'; // Ensure you import classNames
 
 const Header = () => {
     const { mode, toggleMode } = useTheme();
-    const { currentUser, logout } = useAuth(); // Use AuthContext to get the current user and logout function
+    const { currentUser, logout } = useAuth();
     const navigate = useNavigate();
-    const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -26,7 +27,10 @@ const Header = () => {
     };
 
     return (
-        <header className={`bg-gray-800 text-white p-4 fixed w-full top-0 z-10 ${mode === 'dark' ? 'dark' : ''}`}>
+        <header className={classNames('text-white p-4 fixed w-full top-0 z-10', {
+            'bg-gray-900': mode === 'dark',
+            'bg-gray-200 text-gray-800': mode !== 'dark'
+        })}>
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo Modal */}
                 {isModalOpen && (
@@ -45,7 +49,7 @@ const Header = () => {
                     </div>
                 )}
 
-                <div className="text-xl font-bold cursor-pointer" onClick={openModal}>
+                <div className={`text-xl font-bold cursor-pointer ${mode === 'dark' ? 'text-white' : 'text-gray-800'}`} onClick={openModal}>
                     ShoppyMax Dashboard
                 </div>
 
@@ -60,9 +64,9 @@ const Header = () => {
 
                     <Menu as="div" className="relative">
                         <div>
-                            <Menu.Button className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                            <Menu.Button className={`relative p-1 text-gray-500 focus:ring-white focus:ring-offset-${mode === 'dark' ? 'gray-800' : 'gray-800'}`}>
                                 <span className="sr-only">View notifications</span>
-                                <BellIcon className="h-6 w-6" aria-hidden="true" />
+                                <BellIcon className={`h-6 w-6 ${mode === 'dark' ? 'text-white' : 'text-gray-500'}`} aria-hidden="true" />
                             </Menu.Button>
                         </div>
                         <Transition
@@ -74,12 +78,13 @@ const Header = () => {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Menu.Items className={`absolute -right-12 z-10 mt-2 w-40 origin-top-right rounded-md ${mode === 'dark' ? 'bg-gray-900' : 'bg-white'} py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                                        style={{ maxHeight: '20rem', overflowY: 'auto' }}>
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <div className={`${active ? 'bg-gray-100' : ''} px-4 py-2 text-sm text-gray-700`}>
+                                        <Link to="#" className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm ${mode === 'dark' ? 'text-white' : 'text-gray-700'} hover:text-gray-900`}>
                                             Notifications here
-                                        </div>
+                                        </Link>
                                     )}
                                 </Menu.Item>
                             </Menu.Items>
@@ -88,8 +93,8 @@ const Header = () => {
 
                     <Menu as="div" className="relative ml-3">
                         <div>
-                            <Menu.Button className="flex items-center rounded-full bg-gray-800 text-sm focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                                <span className="text-white mr-2">Welcome, {currentUser ? currentUser.username : 'Guest'}</span>
+                            <Menu.Button className={`flex items-center text-sm focus:ring-white focus:ring-offset-2 focus:ring-offset-${mode === 'dark' ? 'gray-800' : 'gray-800'}`}>
+                                <span className={`text-${mode === 'dark' ? 'gray-200' : 'gray-800'} mr-2`}>Welcome, {currentUser ? currentUser.username : 'Guest'}</span>
                             </Menu.Button>
                         </div>
                         <Transition
@@ -101,23 +106,18 @@ const Header = () => {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                         >
-                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Menu.Items className={`absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md ${mode === 'dark' ? 'bg-gray-900' : 'bg-white'} py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                                        style={{ maxHeight: '20rem', overflowY: 'auto' }}>
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <Link
-                                            to="/profilesettings"
-                                            className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm text-gray-700`}
-                                        >
+                                        <Link to="/profilesettings" className={`${active ? 'bg-gray-100' : ''} block px-4 py-2 text-sm ${mode === 'dark' ? 'text-white' : 'text-gray-700'} hover:text-gray-900`}>
                                             Your Profile
                                         </Link>
                                     )}
                                 </Menu.Item>
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <button
-                                            onClick={handleLogout}
-                                            className={`${active ? 'bg-gray-100' : ''} block w-full text-left px-4 py-2 text-sm text-gray-700`}
-                                        >
+                                        <button onClick={handleLogout} className={`${active ? 'bg-gray-100' : ''} block w-full text-left px-4 py-2 text-sm ${mode === 'dark' ? 'text-white' : 'text-gray-700'} hover:text-gray-900`}>
                                             Sign out
                                         </button>
                                     )}

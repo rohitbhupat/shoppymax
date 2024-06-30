@@ -27,10 +27,13 @@ const ProductList = () => {
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
+            <br/>
+            <br/>
             <div className="flex flex-1">
                 <Sidebar />
                 <main className="flex-1 p-4">
-                    <h1 className="text-2xl font-bold mb-4">Product List</h1>
+                    {/* <h1 className="text-2xl font-bold mb-4">Product List</h1> */}
+                    <br/>
                     {products.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {products.map((product) => (

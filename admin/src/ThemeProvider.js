@@ -11,7 +11,7 @@ export const ThemeProvider = ({ children }) => {
     });
 
     const toggleMode = () => {
-        const newMode = mode === 'dark' ? 'light' : 'dark';
+        const newMode = mode === 'light' ? 'dark' : 'light';
         setMode(newMode);
         localStorage.setItem('mode', newMode);
     };

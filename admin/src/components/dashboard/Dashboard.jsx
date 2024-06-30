@@ -25,14 +25,19 @@ const Dashboard = () => {
 
     return (
         <Layout>
-            <h1 className={`text-2xl font-bold mb-4 text-${mode === 'dark' ? 'white' : 'black'}`}>Dashboard</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <StatsCard title="Total Users" value="1000" mode={mode} />
-                <StatsCard title="Total Orders" value="500" mode={mode} />
-                {/* Add more stats cards here */}
+            <div className={`flex flex-col min-h-screen h-screen ${mode === 'dark' ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
+                <div className="flex-grow">
+                    <br/>
+                    <h1 className={`text-2xl font-bold mb-4 ${mode === 'dark' ? 'text-white' : 'text-black'}`}>Dashboard</h1>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <StatsCard title="Total Users" value="1000" mode={mode} />
+                        <StatsCard title="Total Orders" value="500" mode={mode} />
+                        {/* Add more stats cards here */}
+                    </div>
+                    {/* <RecentActivities mode={mode} /> */}
+                    {/* Add more dashboard components here */}
+                </div>
             </div>
-            <RecentActivities mode={mode} />
-            {/* Add more dashboard components here */}
         </Layout>
     );
 };
